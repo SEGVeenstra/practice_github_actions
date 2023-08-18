@@ -19,5 +19,19 @@ jobs:
         if: startsWith(github.head_ref, 'release/') && github.event.pull_request.merged
         runs-on: ubuntu-latest
         steps:
-            - run: |
+            - name: Is release PR check
+              run: |
                 echo A 'release' PR has been merged: ${{ github.head_ref }}
+            - name: Checkout master
+              uses: actions/checkout@v3
+              with:
+                ref: master
+
+            - run: |
+                version=$(basename github.head_ref)
+                echo $version
+                git fetch origin
+                git merge --squash ${{ github.head_ref }}
+                git tag $version
+                git push
+                git push --tags
