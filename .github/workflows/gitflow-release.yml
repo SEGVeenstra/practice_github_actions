@@ -15,6 +15,7 @@ jobs:
                 echo HEAD starts with 'release/': ${{ startsWith(github.head_ref, 'release/') }}
                 echo Merged: ${{ github.event.pull_request.merged }}
                 echo should run: ${{ startsWith(github.head_ref, 'releases/') && github.event.pull_request.merged }}
+                echo REPOSITORY URL: ${{ github.repositoryUrl }}
     if_merged:
         if: startsWith(github.head_ref, 'release/') && github.event.pull_request.merged
         runs-on: ubuntu-latest
@@ -23,19 +24,11 @@ jobs:
               run: |
                 echo A 'release' PR has been merged: ${{ github.head_ref }}
 
-            - name: Checkout code
-              uses: actions/checkout@v3
-              with:
-                ref: ${{ github.head_ref }}
-            
-            - name: Checkout code
-              uses: actions/checkout@v3
-              with:
-                ref: master
-
             - run: |
                 version=$(basename ${{ github.head_ref }})
                 echo ${version}
+                git clone --branch ${{ github.head_ref }} ${{ github.repositoryUrl }}
+                git checkout master
                 git merge --squash ${{ github.head_ref }}
                 git tag ${version}
                 git push
