@@ -7,6 +7,12 @@ on:
             - closed
 
 jobs:
+    print_info:
+        runs-on: ubuntu-latest
+        steps:
+            - run: |
+                echo HEAD_REF: ${{ github.head_ref }}
+                echo Merged: ${{ github.event.pull_request.merged }}
     if_merged:
         if: startsWith(github.head_ref, 'releases/') && github.event.pull_request.merged
         runs-on: ubuntu-latest
