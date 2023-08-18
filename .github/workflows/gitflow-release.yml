@@ -29,20 +29,10 @@ jobs:
               with:
                 ref: master
 
-            - name: Merge to master
-              uses: bambamboole/gha-upmerge@main
+            - name: Merge release -> master
+              uses: devmasx/merge-branch@master
               with:
-                to_branch: 'master'
-                from_branch: ${{ github.head_ref }}
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            - run: |
-                version=$(basename ${{ github.head_ref }})
-                echo ${version}
-                git clone --branch ${{ github.head_ref }} ${{ github.repositoryUrl }}
-                git checkout master
-                git merge --squash ${{ github.head_ref }}
-                git tag ${version}
-                git push
-                git push --tags
+                type: now
+                from_branch: development
+                target_branch: master
+                github_token: ${{ secrets.GITHUB_TOKEN }}
