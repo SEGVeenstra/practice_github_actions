@@ -26,12 +26,13 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
               with: 
-                ref: master
+                ref: ${{ github.head_ref }}
                 fetch-depth: '0'
 
             - run: |
                 version=$(basename ${{ github.head_ref }})
                 echo ${version}
+                git checkout master
                 git merge --squash ${{ github.head_ref }}
                 git tag ${version}
                 git push
