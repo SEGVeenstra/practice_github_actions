@@ -12,11 +12,11 @@ jobs:
         steps:
             - run: |
                 echo HEAD_REF: ${{ github.head_ref }}
-                echo HEAD starts with 'release/': ${{ startsWith(github.head_ref, 'releases/') }}
+                echo HEAD starts with 'release/': ${{ startsWith(github.head_ref, 'release/') }}
                 echo Merged: ${{ github.event.pull_request.merged }}
                 echo should run: ${{ startsWith(github.head_ref, 'releases/') && github.event.pull_request.merged }}
     if_merged:
-        if: startsWith(github.head_ref, 'releases/') && github.event.pull_request.merged
+        if: startsWith(github.head_ref, 'release/') && github.event.pull_request.merged
         runs-on: ubuntu-latest
         steps:
             - run: |
