@@ -22,16 +22,14 @@ jobs:
             - name: Is release PR check
               run: |
                 echo A 'release' PR has been merged: ${{ github.head_ref }}
-            - name: Checkout master
-              uses: actions/checkout@v3
-              with:
-                ref: master
 
             - run: |
-                version=$(basename github.head_ref)
-                echo $version
+                version=$(basename ${{ github.head_ref }})
+                echo ${ version }
+                git checkout ${{ github.head_ref }}
+                git checkout master
                 git fetch origin
                 git merge --squash ${{ github.head_ref }}
-                git tag $version
+                git tag ${ version }
                 git push
                 git push --tags
