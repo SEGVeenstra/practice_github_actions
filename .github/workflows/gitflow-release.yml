@@ -25,11 +25,11 @@ jobs:
 
             - run: |
                 version=$(basename ${{ github.head_ref }})
-                echo ${ version }
+                echo ${version}
                 git checkout ${{ github.head_ref }}
                 git checkout master
                 git fetch origin
                 git merge --squash ${{ github.head_ref }}
-                git tag ${ version }
+                git tag ${version}
                 git push
                 git push --tags
